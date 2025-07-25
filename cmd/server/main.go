@@ -40,6 +40,12 @@ func main() {
 		})
 	})
 
+	router.GET("/health", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"status": "ok",
+		})
+	})
+
 	//Define string with port value
 	port := "8080"
 	//Logs message so server is running
