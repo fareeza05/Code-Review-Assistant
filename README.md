@@ -19,24 +19,6 @@ It is built using the [Gin](https://github.com/gin-gonic/gin) framework and stru
 
 ---
 
-## Project Structure
-```
-ai-code-reviewer/
-├── cmd/ # Application entry point
-│ └── server/
-│ └── main.go
-├── internal/
-│ ├── api/ # Request/response types and handlers
-│ │ └── types.go
-│ ├── models/ # Core domain models (if needed)
-│ └── services/ # Business logic (future expansion)
-├── go.mod # Go module definition
-├── go.sum # Dependency checksums
-├── .gitignore
-└── README.md
-```
-
----
 ## Running the Server
 
 1. Clone the repo:
@@ -62,6 +44,27 @@ curl -X POST http://localhost:8080/analyze \
   }'
 
 ```
+
+---
+
+## Project Structure
+```
+ai-code-reviewer/
+├── cmd/ # Application entry point
+│ └── server/
+│ └── main.go
+├── internal/
+│ ├── api/ # Request/response types and handlers
+│ │ └── types.go
+│ ├── models/ # Core domain models (if needed)
+│ └── services/ # Business logic (future expansion)
+├── go.mod # Go module definition
+├── go.sum # Dependency checksums
+├── .gitignore
+└── README.md
+```
+
+
 ---
 
 ## API Endpoints
@@ -93,9 +96,9 @@ json
 ---
 
 ## Future Roadmap / To-Do
-- [] Integrate AI code analysis
-- [] Add authentication
-- [] Add logging with request IDs
-- [] Support file uploads
-- [] Add frontend/CLI client
-- [] Dockerize the app
+-  Integrate AI code analysis
+- Add authentication
+- Add logging with request IDs
+- Support file uploads
+- Add frontend/CLI client
+- Dockerize the app
