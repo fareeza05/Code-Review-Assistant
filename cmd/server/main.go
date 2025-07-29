@@ -62,40 +62,45 @@ func main() {
 		})
 	})
 
-	router.GET("/health", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"status": "ok",
+	//API versioning
+	v1 := router.Group("/api/v1")
+	{
+		v1.GET("/health", func(c *gin.Context) {
+			c.JSON(200, gin.H{
+				"status": "ok",
+			})
 		})
-	})
 
-	/*
-		Post route -> /analyze
-		func(gin context) -> handler function
-		c-> context
-		empty variable req is created with type CodeSubmissionRequest
+		/*
+			Post route -> /analyze
+			func(gin context) -> handler function
+			c-> context
+			empty variable req is created with type CodeSubmissionRequest
 
-	*/
-	router.POST("/analyze", func(c *gin.Context) {
-		var req api.CodeSubmissionRequest
+		*/
+		v1.POST("/analyze", func(c *gin.Context) {
+			var req api.CodeSubmissionRequest
 
-		// err Tries to parse incoming json body into req struct
-		// if err is not nil (aka -> it receives error message)
-		// If there's error we send a 400 Bad response
-		// gin.H is helper for building JSON map
-		//return -> used to exit early
-		if err := c.ShouldBindJSON(&req); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
+			// err Tries to parse incoming json body into req struct
+			// if err is not nil (aka -> it receives error message)
+			// If there's error we send a 400 Bad response
+			// gin.H is helper for building JSON map
+			//return -> used to exit early
+			if err := c.ShouldBindJSON(&req); err != nil {
+				c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+				return
+			}
 
-		//If there's no error, we return a 200 OK code and the following response
-		c.JSON(http.StatusOK, gin.H{
-			"message":  "Code analysis complete",
-			"filename": req.Filename,
-			"language": req.Language,
-			"issues":   []string{}, //Placeholder issues
+			//If there's no error, we return a 200 OK code and the following response
+			c.JSON(http.StatusOK, gin.H{
+				"message":  "Code analysis complete",
+				"filename": req.Filename,
+				"language": req.Language,
+				"issues":   []string{}, //Placeholder issues
+			})
 		})
-	})
+
+	}
 
 	//Define string with port value
 	port := "8080"
