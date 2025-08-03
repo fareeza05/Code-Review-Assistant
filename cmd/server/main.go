@@ -39,8 +39,11 @@ func main() {
 		ExposeHeaders:    []string{"Content-Length"}, //Response headers browser is allowed to see
 		AllowCredentials: true,                       //Allows cookies/auth tokens to be sent w requests
 		MaxAge:           12 * time.Hour,             //How long browser should cache CORS preflight response (avoids sending preflight every time)
+
 		// Preflight -> when browser asks server if a req is okay
 	}))
+
+	router.Use(api.MaxBodySize(5 << 20))
 
 	router.Use(api.ErrorHandler())
 
@@ -109,13 +112,18 @@ func main() {
 	//Logs message so server is running
 	log.Printf("Listening on http://localhost:%s", port)
 
-	/*
-		Declares new var - err
-		Runs route
-		The value returned by running that is then assigned to err
-		If err is nil error hasnt occured, server is properly listening
-	*/
-	if err := router.Run(":" + port); err != nil {
+	//Create custom HTTP server with timeouts
+	server := &http.Server{
+		Addr:           ":" + port,
+		Handler:        router,
+		ReadTimeout:    10 * time.Second,
+		WriteTimeout:   10 * time.Second,
+		IdleTimeout:    60 * time.Second,
+		MaxHeaderBytes: 5 << 20,
+	}
+
+	//Start
+	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		log.Fatalf("Failed to start server: %v", err)
 	}
 
