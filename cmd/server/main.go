@@ -42,6 +42,8 @@ func main() {
 		// Preflight -> when browser asks server if a req is okay
 	}))
 
+	router.Use(api.ErrorHandler())
+
 	/*Define first route for root
 	GET - registers a get route
 		first arg is path
